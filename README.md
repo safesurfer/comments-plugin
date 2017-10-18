@@ -4,7 +4,7 @@ This plugin helps posting the comments to the blogs or websites in the SAFE Brow
 
 ## How to Use
 
-To use this plugin, upload `comment.js` to your website using Web Hosting Manager.
+To use this plugin, upload `comment.js` from the build folder to your website using Web Hosting Manager.
 
 Add the script to your html page:
 
@@ -14,3 +14,17 @@ Add the script to your html page:
   window.safeComments('CommentTitle', 'CommentTargetID');
 </script>
 ```
+
+## Build the Plugin
+
+1. Clone the project
+    ```bash
+    $ git clone https://github.com/<>.git
+    ```
+
+2. Install the Node.js dependencies.
+    ```bash
+    $ yarn
+    ```
+
+3. `yarn run build` will build the plugin to the `build` folder.
