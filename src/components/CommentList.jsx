@@ -46,10 +46,28 @@ class CommentList extends React.Component {
     )
   }
 
+  getAuthorisingContainer() {
+    return (
+      <div className="_comments_init">Initialising comments for this post. Please wait...</div>
+    );
+  }
+
+  getNotEnabledContainer() {
+    return (
+      <div className="_comments_init">Sorry comments not enabled for this post.</div>
+    );
+  }
+
   render() {
     const store = this.props.store;
     const userList = store.publicNames;
+    if (store.isAuthorising) {
+      return this.getAuthorisingContainer();
+    }
 
+    if (!store.isEnabled) {
+      return this.getNotEnabledContainer();
+    }
     const isLoading = store.isLoading ? (<div className="_comments-loading"><div className="loader-1">{''}</div></div>) : null;
 
     return (
@@ -57,7 +75,7 @@ class CommentList extends React.Component {
         <div className="_comment-box">
           <form onSubmit={this.handleFormSubmit}>
             <div className="_comment-users">
-              <label htmlFor="commentUser">Select User</label>
+              <label htmlFor="commentUser">Comment as</label>
               <select name="commentUser" ref={(c) => { this.name = c; }}>
                 {userList.map((userList, i) => <option key={i} value={userList}>{userList}</option>)}
                 <option value={constant.ANONYMOUS} >{constant.ANONYMOUS}</option>
@@ -65,8 +83,9 @@ class CommentList extends React.Component {
             </div>
             <textarea
               className="_comment-msg"
-              placeholder="Enter your comment"
+              placeholder="Enter your comment. Not more than 150 characters."
               name="message"
+              maxLength="150"
               value={this.newMessage}
               required="required"
               onChange={this.handleInputChange}

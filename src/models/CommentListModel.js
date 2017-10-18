@@ -11,6 +11,10 @@ export default class CommentListModel {
 
   @observable publicNames = [];
 
+  @observable isAuthorising = false;
+
+  @observable isEnabled = false;
+
   @observable isOwner = false;
 
   @observable isNwConnected = true;
@@ -19,7 +23,7 @@ export default class CommentListModel {
 
   @action
   nwStateCb = (newState) => {
-    console.log("@model Network state changed to: ", newState);
+    console.log('@model Network state changed to: ', newState);
     if (newState === CONSTANTS.NET_STATE.CONNECTED) {
       this.isNwConnected = true;
       return;
@@ -30,13 +34,21 @@ export default class CommentListModel {
   @action
   authorise = async (topic) => {
     try {
+      this.isAuthorising = true;
       this.api = new SafeApi(topic, this.nwStateCb);
       await this.api.authorise(topic);
       this.comments = await this.api.listComments();
       const publicIDList = await this.api.getPublicNames();
       this.publicNames = publicIDList;
       this.isOwner = await this.api.isOwner();
+      this.isAuthorising = false;
+      this.isEnabled = true;
     } catch (err) {
+      if (err.message && err.message === CONSTANTS.ERROR_MSG.PUBLIC_ID_DOES_NOT_MATCH) {
+        this.isAuthorising = false;
+        this.isEnabled = false;
+        return;
+      }
       alert(`Failed to initialise: ${err}`);
     }
   }

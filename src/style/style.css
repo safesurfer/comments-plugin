@@ -13,6 +13,19 @@
     padding-bottom: 30px;
 }
 
+._comments_init {
+    width: 800px;
+    position: relative;
+    margin: 24px auto 0;
+    border-top: 1px solid #EEE;
+    font-family: "arial", "sans-serif";
+    padding-bottom: 30px;
+    text-align: center;
+    line-height: 150px;
+    font-size: 16px;
+    color: #606060;
+}
+
 ._comments ._comment-box {
     padding: 24px 24px 0;
     margin-bottom: 24px;
@@ -132,6 +145,7 @@
 
 ._comments ._comment-list ._comment-ls ._comment-ls-i ._message {
     font-size: 16px;
+    overflow-wrap: break-word;
     font-weight: normal;
     color: #606060;
 }
